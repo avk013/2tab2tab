@@ -20,23 +20,98 @@ namespace _2tab2tab
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string[][] tab_array_in_double = null;
-            int nom_begin = 0;
-            string[] tab0 = File.ReadAllLines(@"c:\1.csv", Encoding.Default);
+            string[][] tab_array_in_double1 = null;
+            string[][] tab_array_in_double2 = null;
+            string[][] tab_array_in_double_out = null;
+            int nom_begin = 0, column_tab=0;
+            string[] tab1 = File.ReadAllLines(@"c:\!!\1.csv", Encoding.Default);
+            string[] tab2 = File.ReadAllLines(@"c:\!!\2.csv", Encoding.Default);
             string[] tab_array_in;
-            tab_array_in_double = new string[tab0.Length][];
+            tab_array_in_double1 = new string[tab1.Length][];
+            tab_array_in_double2 = new string[tab2.Length][];
+            int maxim=0;
+            //if (tab2.Length > tab1.Length)
+                maxim =(tab2.Length+ tab1.Length);
+            tab_array_in_double_out = new string[maxim][];
 
-            for (int i = 0; i < tab0.Length; i++)
+            for (int i = 0; i < tab1.Length; i++)
             {
-                tab_array_in_double[i] = new string[4];
-                if (!String.IsNullOrEmpty(tab0[i]))
+                tab_array_in_double1[i] = new string[16];
+                if (!String.IsNullOrEmpty(tab1[i]))
                 {
-                    tab_array_in = tab0[i].Split(';');
-                    for (int j = 0; j < 4; j++)
-                    { tab_array_in_double[i][j] = tab_array_in[j]; }
+                    tab_array_in = tab1[i].Split(',');
+                    column_tab=tab_array_in.Length;
+                    for (int j = 0; j < column_tab; j++)
+                    { tab_array_in_double1[i][j] = tab_array_in[j]; }
                 }
             }
+            ////////////////
+            for (int i = 0; i < tab2.Length; i++)
+            {
+                tab_array_in_double2[i] = new string[14];
+                if (!String.IsNullOrEmpty(tab2[i]))
+                {
+                    tab_array_in = tab2[i].Split(',');
+                    column_tab = tab_array_in.Length;
+                    for (int j = 0; j < column_tab; j++)
+                    { tab_array_in_double2[i][j] = tab_array_in[j]; }
+                }
+            }
+            label4.Text = tab_array_in_double1.Length.ToString();
+            label5.Text = tab_array_in_double2.Length.ToString();
+            // format tab1
+            //идентификатор,Файл,Операционная система, Пакет обновления ОС, Имя компьютера,Имя пользователя, SMTP -адрес e - mail,Вход в домен,Тип ЦП,Системная плата,Системная память, Монитор, Дисковый накопитель,Первичный адрес IP,Первичный адрес MAC
+            // format tab2
+            //кабинет,компьютер,email,антивирус,ethernal-Bluechecker,лицензия,ХР,ELT,принтер/сканер,scaner,корпус,ИПБ,свитч/роутер
+            // идея компььютер должен совпадать с частью идентификатора, или имени компьютера, или имени пользователя
+            // 2.1 сравниваем с 1.0, 1.4, 1.5
+            int k = 0;
+            for(int i=0;i<tab_array_in_double1.Length;i++)
+            {
+                tab_array_in_double_out[i] = new string[30];
+                //tab_array_in_double_out[i][1]= i.ToString();
+                for (int ii = 0; ii < tab_array_in_double2.Length; ii++)
+                {
+                    if ((tab_array_in_double2[ii][1].IndexOf(tab_array_in_double1[i][0])>0)
+                ||(tab_array_in_double2[ii][1].IndexOf(tab_array_in_double1[i][4]) > 0)
+                ||(tab_array_in_double2[ii][1].IndexOf(tab_array_in_double1[i][5]) > 0))
+                   tab_array_in_double_out[k++][1] = tab_array_in_double2[ii][1];
+                    
 
+                }
+                // tab_array_in_double_out[i][i] = i.ToString();
+            }
+
+
+
+
+            //массив в csv
+            SaveArrayAsCSV(tab_array_in_double_out, @"c:\!!\out.csv");
+        }
+
+
+
+
+        public static void SaveArrayAsCSV(Array arrayToSave, string fileName)
+        {
+            using (StreamWriter file = new StreamWriter(fileName))
+            {
+                WriteItemsToFile(arrayToSave, file);
+            }
+        }
+
+        private static void WriteItemsToFile(Array items, TextWriter file)
+        {
+            foreach (object item in items)
+            {
+                if (item is Array)
+                {
+                    WriteItemsToFile(item as Array, file);
+                    file.Write(Environment.NewLine);
+                }
+                else file.Write(item + ",");
+            }
         }
     }
+
 }
