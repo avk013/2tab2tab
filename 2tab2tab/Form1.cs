@@ -66,16 +66,27 @@ namespace _2tab2tab
             // идея компььютер должен совпадать с частью идентификатора, или имени компьютера, или имени пользователя
             // 2.1 сравниваем с 1.0, 1.4, 1.5
             int k = 0;
-            for(int i=0;i<tab_array_in_double1.Length;i++)
+            for(int i=0;i<tab_array_in_double2.Length;i++)
             {
-                tab_array_in_double_out[i] = new string[30];
+                
                 //tab_array_in_double_out[i][1]= i.ToString();
-                for (int ii = 0; ii < tab_array_in_double2.Length; ii++)
+                for (int ii = 0; ii < tab_array_in_double1.Length; ii++)
                 {
-                    if ((tab_array_in_double2[ii][1].IndexOf(tab_array_in_double1[i][0])>0)
-                ||(tab_array_in_double2[ii][1].IndexOf(tab_array_in_double1[i][4]) > 0)
-                ||(tab_array_in_double2[ii][1].IndexOf(tab_array_in_double1[i][5]) > 0))
-                   tab_array_in_double_out[k++][1] = tab_array_in_double2[ii][1];
+                if (
+                        //(tab_array_in_double1[ii][0].IndexOf(tab_array_in_double2[i][0]) >= 0) ||
+                // имя учетки в имени файла                
+            (tab_array_in_double1[ii][0].ToUpper().IndexOf(tab_array_in_double2[i][1].ToUpper()) >= 0)
+              && // номер кабинета в имени файла
+              (tab_array_in_double1[ii][0].ToUpper().IndexOf(tab_array_in_double2[i][0].ToUpper()) >= 0)
+                // 
+                //|| (tab_array_in_double1[ii][4].IndexOf(tab_array_in_double2[i][1]) > 0)
+                //|| (tab_array_in_double1[ii][5].IndexOf(tab_array_in_double2[i][1]) > 0)))
+                )//)
+                    {
+                        tab_array_in_double_out[k] = new string[30];
+                        tab_array_in_double_out[k][1] = tab_array_in_double2[i][0];
+                        tab_array_in_double_out[k++][2] = tab_array_in_double2[i][1];
+                    }
                     
 
                 }
