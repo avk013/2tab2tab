@@ -31,7 +31,7 @@ namespace _2tab2tab
             tab_array_in_double2 = new string[tab2.Length][];
             int maxim=0;
             //if (tab2.Length > tab1.Length)
-                maxim =(tab2.Length+ tab1.Length);
+                maxim =2*(tab2.Length+ tab1.Length);
             tab_array_in_double_out = new string[maxim][];
 
             for (int i = 0; i < tab1.Length; i++)
@@ -75,17 +75,37 @@ namespace _2tab2tab
                 if (
                         //(tab_array_in_double1[ii][0].IndexOf(tab_array_in_double2[i][0]) >= 0) ||
                 // имя учетки в имени файла                
-            (tab_array_in_double1[ii][0].ToUpper().IndexOf(tab_array_in_double2[i][1].ToUpper()) >= 0)
+            ((tab_array_in_double1[ii][0].ToUpper().IndexOf(tab_array_in_double2[i][1].ToUpper()) >= 0)
+            || (tab_array_in_double1[ii][4].ToUpper().IndexOf(tab_array_in_double2[i][1].ToUpper()) >= 0))
               && // номер кабинета в имени файла
-              (tab_array_in_double1[ii][0].ToUpper().IndexOf(tab_array_in_double2[i][0].ToUpper()) >= 0)
+              ((tab_array_in_double1[ii][0].ToUpper().IndexOf(tab_array_in_double2[i][0].ToUpper()) >= 0)
+              )
                 // 
                 //|| (tab_array_in_double1[ii][4].IndexOf(tab_array_in_double2[i][1]) > 0)
                 //|| (tab_array_in_double1[ii][5].IndexOf(tab_array_in_double2[i][1]) > 0)))
                 )//)
                     {
+                        int stlb = 0;
                         tab_array_in_double_out[k] = new string[30];
-                        tab_array_in_double_out[k][1] = tab_array_in_double2[i][0];
-                        tab_array_in_double_out[k++][2] = tab_array_in_double2[i][1];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][0];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][1];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][5];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double1[ii][2].Replace("Microsoft Windows ", "Win").Replace("Professional ", "Pro").Replace("Pro ", "Pro");
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double1[ii][3];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][2];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][8];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][9];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][10];
+                        tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][11];
+
+
+                        //tab_array_in_double_out[k][stlb++] = tab_array_in_double2[i][0];
+
+                        tab_array_in_double_out[k++][stlb++] = tab_array_in_double2[i][1];
+
+                        tab_array_in_double2[i][0] = "null";
+                        tab_array_in_double1[ii][0] = "null";
+
                     }
                     
 
@@ -98,6 +118,8 @@ namespace _2tab2tab
 
             //массив в csv
             SaveArrayAsCSV(tab_array_in_double_out, @"c:\!!\out.csv");
+            SaveArrayAsCSV(tab_array_in_double2, @"c:\!!\out_2.csv");
+            SaveArrayAsCSV(tab_array_in_double1, @"c:\!!\out_1.csv");
         }
 
 
