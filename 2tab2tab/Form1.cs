@@ -103,8 +103,10 @@ namespace _2tab2tab
 
                         tab_array_in_double_out[k++][stlb++] = tab_array_in_double2[i][1];
 
-                        tab_array_in_double2[i][0] = "null";
-                        tab_array_in_double1[ii][0] = "null";
+                        tab_array_in_double2[i][0] = "+" + tab_array_in_double2[i][0];
+                      //  for(int l=0; l< tab_array_in_double2[i].Length;l++)
+                       //    tab_array_in_double2[i][l] = "_";
+                        tab_array_in_double1[ii][0] = "+"+tab_array_in_double1[ii][0];
 
                     }
                     
@@ -127,7 +129,8 @@ namespace _2tab2tab
 
         public static void SaveArrayAsCSV(Array arrayToSave, string fileName)
         {
-            using (StreamWriter file = new StreamWriter(fileName))
+            var dstEncoding = Encoding.UTF8;
+            using (StreamWriter file = new StreamWriter(fileName, append: false, encoding: dstEncoding))
             {
                 WriteItemsToFile(arrayToSave, file);
             }
@@ -142,7 +145,7 @@ namespace _2tab2tab
                     WriteItemsToFile(item as Array, file);
                     file.Write(Environment.NewLine);
                 }
-                else file.Write(item + ",");
+                else file.Write(item + ";");
             }
         }
     }
